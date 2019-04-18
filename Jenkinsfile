@@ -6,6 +6,7 @@ pipeline {
         }
     }
     environment {
+        HOME = '.'
         CI = 'true'
     }
     stages {
@@ -16,14 +17,14 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './deps/npm/scripts/release.'
+                sh './deps/npm/scripts/install.sh'
             }
         }
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                sh './deps/npm/scripts/release.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                sh './deps/npm/scripts/relocate.sh'
             }
         }
     }
